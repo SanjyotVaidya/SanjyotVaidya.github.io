@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://SanjyotVaidya.github.io/al-folio/sitemap.xml
+Sitemap: https://SanjyotVaidya.github.io/sitemap.xml
