@@ -18,6 +18,7 @@ How CPU runs next instruction
 
 ## If else loop branch prediction
 
+
 How CPU runs on branch prediction
 Gobolt implementation on if else
 What CPU is running in instructions
