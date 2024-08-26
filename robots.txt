@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://SanjyotVaidya.github.io/sitemap.xml
+Sitemap: https://sanjyotvaidya.github.io/sitemap.xml
