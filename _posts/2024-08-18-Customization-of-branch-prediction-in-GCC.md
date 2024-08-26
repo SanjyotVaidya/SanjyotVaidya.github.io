@@ -13,7 +13,7 @@ Found an interesting way while coding... some backstory
 
 ## What is branch prediction in computer architecture?
 
-Pipelining is an implementation technique which overlaps multiple instructions in execution. It takes advantage of parallelism that exists 
+Pipelining is an implementation technique which overlaps multiple instructions in execution. It takes advantage of parallelism that exists
 among the actions needed to execute an instruction. All processors use pipelining to overlap instructions to improve performance.
 
 Every instruction in RISC architecture can be executed in at most 5 clock cycles. These cycles are :
@@ -22,27 +22,25 @@ For simplicity, let's consider implementation of RISC instruction set for unders
 Every instruction in RISC set is implemented in at most 5 clock cycles. Which are, fetch, decode, execute, memory access and write back.
 
 Simple 5 stage risc pipeline can be seen as below:
+
 1. Instruction Fetch
 2. Instruction Decode
 3. Execute
 4. Memory Access
 5. Write Back
 
-
 This can be implemented in pipelining architecture as below:
-
 
 But what happens when there is if else branch?
 In such cases CPU tries to do the prediction on which branch to take in order to execute the branch.
 
 | Instruction number | Clock 1 | Clock 2 | Clock 3 | Clock 4 | Clock 5 | Clock 6 | Clock 7 | Clock 8 | Clock 9 |
-| :----------------- | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | 
+| :----------------- | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
 | Instruction i      |   IF    |   ID    |   EX    |   MEM   |   WB    |         |         |         |         |
 | Instruction i+1    |         |   IF    |   ID    |   EX    |   MEM   |   WB    |         |         |         |
 | Instruction i+2    |         |         |   IF    |   ID    |   EX    |   MEM   |   WB    |         |         |
 | Instruction i+3    |         |         |         |   IF    |   ID    |   EX    |   MEM   |   WB    |         |
 | Instruction i+4    |         |         |         |         |   IF    |   ID    |   EX    |   MEM   |   WB    |
-
 
 But there are few limitations to this approach. One of such limitation comes while handling branches and control statements.
 In control statements, the program counter can jump and instruction in pipeline can no longer be valid.
@@ -84,9 +82,10 @@ int main(int argc, char *argv[]) {
 
 	return 0;
 
-	
+
 }
 ```
+
 In above code, `likely` and `unlikely` keywords are defined by using `__builtin_expect`.
 
 The assembly code on x86-64 (AMD64) architecture was as follows:
@@ -274,17 +273,14 @@ We can see the difference in printf function here. The printf function is pushed
 
 These are just small examples but in bigger codebase, using these likely and unlikely keywords can improve the performance significantly
 
-
-## Commands used to generate the assembly code are: 
+## Commands used to generate the assembly code are:
 
 1. `gcc -c -O3 -std=gnu11 test_likely.c`
-gcc command is used to compile the code and generate the code in machine level language. O3 flag shows that optimization level is 3. There are total 4 levels of optimization levels in gcc (from 0-3) with third being highest.
+   gcc command is used to compile the code and generate the code in machine level language. O3 flag shows that optimization level is 3. There are total 4 levels of optimization levels in gcc (from 0-3) with third being highest.
 2. `objdump -dr test_likely.o`
-objdump command does object dump and parameters dr are used to disassemble the machine code in assembly.
-
+   objdump command does object dump and parameters dr are used to disassemble the machine code in assembly.
 
 ## References
+
 1. Book : Computer Architecture: A Quantitative Approach (The Morgan Kaufmann Series in Computer Architecture and Design) 5th edition
 2. https://stackoverflow.com/questions/109710/how-do-the-likely-unlikely-macros-in-the-linux-kernel-work-and-what-is-their-ben
-
-
