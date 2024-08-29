@@ -9,8 +9,6 @@ giscus_comments:
 related_posts:
 ---
 
-Found an interesting way while coding... some backstory
-
 ## What is branch prediction in computer architecture?
 
 Pipelining is an implementation technique which overlaps multiple instructions in execution. It takes advantage of parallelism that exists
