@@ -48,6 +48,8 @@ To avoid this pipeline flush compiler uses optimization techniques to predict wh
 
 There are several ways by which compiler predicts these instructions. One of such example is likey and unlikely instruction.
 
+## Likely and Unlikely Instructions
+
 Likely and unlikely instructions help processor decide which branch is likely to happen and thus reduces the pipeline flushes.
 
 To test this, here is one example of the code:
@@ -271,6 +273,43 @@ We can see the difference in printf function here. The printf function is pushed
 
 These are just small examples but in bigger codebase, using these likely and unlikely keywords can improve the performance significantly
 
+## Return On Address Instructions
+
+Another such instruction to predict control flow of the code is return on address instruction. This instruction is used in functions.
+Since function defined can be called anywhere from the code, it's hard to predict the address from which it was called. Thus, return jump can be hard to predict before execution and thus making pipeline flush.
+
+There is a stack called "Return Address Stack" in hardware, which is a predictor to predict the return of the functions. In GCC, we can know the return address using instruciton `__builtin_return_address`. This functions can be used as following code :
+
+```c
+#include<stdio.h>
+#include<time.h>
+
+#define likely(x)       __builtin_expect(!!(x), 1)
+#define unlikely(x)     __builtin_expect(!!(x), 0)
+
+int square(int num) {
+        void *ptr = __builtin_return_address(0);
+        printf("return address to this square function is : %p\n",ptr);
+        return num*num;
+}
+
+int main(int argc, char *argv[]) {
+        int i=square(time(NULL)%100);
+        if (unlikely(i))
+                printf("value of i %d\n", i);
+        puts("returning now\n");
+        return 0;
+}
+```
+
+The output following code provides is :
+
+```
+return address to this square function is : 0x1040c7ed4
+value of i 7569
+returning now
+```
+
 ## Commands used to generate the assembly code are:
 
 1. `gcc -c -O3 -std=gnu11 test_likely.c`
@@ -282,3 +321,4 @@ These are just small examples but in bigger codebase, using these likely and unl
 
 1. Book : Computer Architecture: A Quantitative Approach (The Morgan Kaufmann Series in Computer Architecture and Design) 5th edition
 2. https://stackoverflow.com/questions/109710/how-do-the-likely-unlikely-macros-in-the-linux-kernel-work-and-what-is-their-ben
+3. https://gcc.gnu.org/onlinedocs/gcc/Return-Address.html
